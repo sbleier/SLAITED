@@ -1,0 +1,124 @@
+HISTORICAL THINKING SKILLS – CONSTRAINED QUESTION SCHEMAS
+
+⸻
+
+1. Comprehension
+
+Goal: Student understands what the source literally says. Only literal, text-based questions are allowed.
+
+Allowed Question Forms (Pick One per Turn):
+	1.	Action Identification – “According to the source, what did [person] do?”
+	2.	Method/Process Identification – “What method or approach is described in this excerpt?”
+	3.	Outcome/Result Identification – “What happened as a result, according to the text?”
+	4.	Detail/Fact Identification – “What number, date, or named detail is mentioned here?”
+	5.	Literal Paraphrase – “Can you summarize this paragraph in your own words?”
+
+Forbidden Question Forms:
+	•	Cause-effect / “why” questions
+	•	Questions about impact, significance, or consequences
+	•	Questions about author perspective (Sourcing)
+	•	Inference beyond the literal text
+	•	Deciding when the skill is complete
+
+Optional Fact Injection:
+	•	1–2 historical context facts pre-selected for Comprehension
+	•	No explanation, interpretation, or commentary
+
+AI Behavior:
+	•	Pick exactly one allowed question per student response
+	•	Do not summarize, explain, or decide mastery
+
+⸻
+
+2. Contextualization
+
+Goal: Place the source in its historical moment.
+
+	1.	Ask about time period – “When was this written?” (publication context)
+	2.	Ask about location or setting – “Where did these events take place?” (subject/event context)
+	3.	Ask about observable historical conditions – “What was happening in society at this time?” (subject/event context)
+	4.	Ask about relevant historical events or norms – “What major events or norms were present during this period?” (subject/event context)
+
+Note: Both "publication context" (when/where/who created the source) and "subject/event context" (historical background of the event/topic) are valid. AI may use either type as appropriate.
+
+
+Forbidden Question Forms:
+	•	Author motives or perspective
+	•	Cause-effect / consequences of the source
+	•	Inference about why the source exists
+
+Optional Fact Injection:
+	•	1–2 brief historical context points (e.g., era overview)
+
+AI Behavior:
+	•	Pick one question per turn
+	•	Keep questions strictly about time, place, and conditions (either publication context or subject/event context)
+
+⸻
+
+3. Sourcing
+
+Goal: Analyze who created the source and how that shapes it.
+
+Allowed Question Forms:
+	1.	Ask about author identity or role – “Who wrote this? What was their position?”
+	2.	Ask about audience – “Who was this written for?”
+	3.	Ask about purpose – “Why might the author have created this?”
+	4.	Ask about perspective influence – “Given the author’s position, what might they emphasize or downplay?”
+
+Forbidden Question Forms:
+	•	Judging reliability or trustworthiness
+	•	Evaluating usefulness for answering the guiding question
+	•	Cause-effect or significance analysis
+
+Fact Injection:
+	•	AI must inject predefined background facts about the author (such as occupation, social status, or known affiliations) without waiting for the student to supply them.
+AI Behavior:
+	•	One question per turn
+	•	Focus only on author, audience, purpose, perspective
+
+⸻
+
+4. Claim / Evidence
+
+Goal: Answer the guiding question using the source. (NOT about author's claim.)
+
+Allowed Question Forms:
+	1.	Ask the student to make a claim – “Based on this source, what can you argue about [guiding question]?” (The claim should address the guiding question, not restate the author's claim.)
+	2.	Ask for textual evidence – “Which words or phrases support your claim?”
+	3.	Ask for connection between evidence and claim – “How does that evidence support your argument?”
+
+Forbidden Question Forms:
+	•	Asking about author perspective (Sourcing)
+	•	Evaluating usefulness or reliability (Evaluation)
+	•	Asking why these events occurred outside the text
+
+Optional Fact Injection:
+	•	Relevant contextual facts if strictly needed for comprehension
+
+AI Behavior:
+	•	Pick one allowed question per turn
+	•	Always require direct connection to the source
+
+⸻
+
+5. Evaluation
+
+Goal: Assess the usefulness and limitations of the source for answering the guiding question.
+
+Allowed Question Forms:
+	1.	Ask about strengths – “What does this source tell us clearly?”
+	2.	Ask about limitations – “What does this source not show us?”
+	3.	Ask about bias effects on content – “How might the author’s perspective limit the information?”
+
+Forbidden Question Forms:
+	•	Simple reliable/unreliable judgments
+	•	General cause-effect or significance analysis
+	•	Asking for claims not grounded in evidence
+
+Optional Fact Injection:
+	•	Brief historical context for perspective if needed
+
+AI Behavior:
+	•	Pick one allowed question per turn
+	•	Focus strictly on source content relative to the guiding question

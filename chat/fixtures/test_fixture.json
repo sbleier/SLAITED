@@ -1,0 +1,36 @@
+[
+{
+    "model": "chat.user",
+    "pk": 1,
+    "fields": {
+        "name": "Mr. Katz",
+        "email": "teacher@example.com",
+        "password_hash": "fakehash123",
+        "role": "teacher",
+        "created_at": "2025-10-20T22:24:57.382Z",
+        "list_of_classes": []
+    }
+},
+{
+    "model": "chat.user",
+    "pk": 2,
+    "fields": {
+        "name": "Sara Bleier",
+        "email": "sara@example.com",
+        "password_hash": "fakehash123",
+        "role": "student",
+        "created_at": "2025-10-20T22:24:57.394Z",
+        "list_of_classes": []
+    }
+},
+{
+    "model": "chat.student",
+    "pk": 2,
+    "fields": {}
+},
+{
+    "model": "chat.teacher",
+    "pk": 1,
+    "fields": {}
+}
+]

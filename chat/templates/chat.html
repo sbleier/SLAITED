@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLAITED Chat</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: Calibri, Arial, sans-serif;
+            background-color: #e8f0e3;
+        }
+
+        /* ===== GRID LAYOUT ===== */
+        .container {
+            display: grid;
+            grid-template-rows: 5vh 53vh 35vh;
+            height: 100vh;
+            width: 100vw;
+            padding: 1.5vh 3vw 3.5vh 3vw;
+            gap: 1.5vh;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2vw;
+            flex-wrap: wrap;
+        }
+
+        .header h1 {
+            color: #ffd93d;
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .header-info {
+            color: #2F3A3D;
+            font-size: 0.75rem;
+        }
+
+        .guiding-question {
+            background-color: rgba(255, 217, 61, 0.15);
+            padding: 0.4vh 1vw;
+            border-radius: 4px;
+            color: #2F3A3D;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        /* ===== SKILL BOX ===== */
+        #skill-box {
+            position: absolute;
+            top: 6.5vh;
+            left: 3vw;
+            right: 3vw;
+            background-color: rgba(255, 217, 61, 0.15);
+            border-left: 3px solid #ffd93d;
+            padding: 0.6vh 1.2vw;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            line-height: 1.3;
+            width: auto;
+            max-width: calc(100% - 6vw);
+            overflow-wrap: break-word;
+            z-index: 10;
+            display: none;
+        }
+        #skill-box.visible {
+            display: block;
+        }
+        .skill-line {
+            color: #2F3A3D;
+            margin-bottom: 0.3vh;
+        }
+        .skill-line strong {
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .skill-meta {
+            font-style: italic;
+            font-size: 0.65rem;
+            opacity: 0.8;
+            color: #2F3A3D;
+        }
+
+        /* ===== CHAT PANEL ===== */
+        .chat-panel {
+            display: grid;
+            grid-template-rows: 1fr auto;
+            background-color: #2d5a2d;
+            border: 1px solid #1a3a1a;
+            border-radius: 4px;
+            padding: 2.5vh 2.5vw;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            margin-top: 4.5vh;  /* Space for skill box - increased to prevent overlap */
+        }
+
+        .chat-box {
+            overflow-y: auto;
+            padding-right: 1vw;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vh;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 217, 61, 0.4);
+            border-radius: 2px;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 217, 61, 0.6);
+        }
+
+        /* Input row */
+        .input-row {
+            display: flex;
+            gap: 0.8vw;
+            margin-top: 2vh;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 1vh 1.2vw;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #f8f8f6;
+            color: #2F3A3D;
+        }
+
+        .input-row input:focus {
+            outline: 2px solid #ffd93d;
+            outline-offset: -2px;
+        }
+
+        .input-row button {
+            padding: 1vh 1.8vw;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            background-color: #ffd93d;
+            color: #2F3A3D;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .input-row button:hover {
+            background-color: #ffc720;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .input-row button:active {
+            transform: translateY(0);
+        }
+
+        .input-row button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== MESSAGE BUBBLES ===== */
+        .msg {
+            max-width: 70%;
+            padding: 1.2vh 1.5vw;
+            border-radius: 6px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .msg.ai {
+            align-self: flex-start;
+            background-color: #e8f0e0;
+            color: #2F3A3D;
+            border-left: 3px solid #ffd93d;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .msg.user {
+            align-self: flex-end;
+            background-color: #f8f8f6;
+            color: #2F3A3D;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .msg.system {
+            align-self: center;
+            background-color: #ffebcc;
+            color: #2F3A3D;
+            border-left: 3px solid #ff9800;
+            font-style: italic;
+            max-width: 80%;
+        }
+
+        /* ===== SOURCE PANEL ===== */
+        .source-panel {
+            background-color: #3a4a4d;
+            border-radius: 4px;
+            padding: 2.5vh 2.5vw;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .source-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .source-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .source-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 217, 61, 0.3);
+            border-radius: 2px;
+        }
+
+        .source-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 217, 61, 0.5);
+        }
+
+        .source-panel h3 {
+            color: #ffd93d;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.4vh;
+        }
+
+        .source-panel .source-meta {
+            color: #b8c5c7;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-bottom: 1.5vh;
+        }
+
+        .source-panel hr {
+            border: none;
+            border-top: 1px solid rgba(255, 217, 61, 0.3);
+            margin: 1.5vh 0;
+        }
+
+        .source-panel p {
+            color: #e8f0e3;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        #source-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        #source-placeholder p {
+            color: #7a8a8d;
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        .progress-indicator {
+            color: #b8c5c7;
+            font-size: 0.85rem;
+            margin-top: 1vh;
+            text-align: center;
+        }
+
+        h1 .yellow {
+            color: #FFC720; /* yellow */
+        }
+
+        h1 .green {
+            color: #2d5a2d; /* same as chat panel */
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>
+            <span class="yellow">SL</span><span class="green">AI</span><span class="yellow">T</span><span class="green">ED</span>
+        </h1>
+        <div id="header-info" class="header-info"></div>
+        <div id="guiding-question" class="guiding-question"></div>
+    </div>
+
+    <div id="skill-box" class="skill-box">
+        <div class="skill-line" id="skill-line"></div>
+        <div class="skill-meta">AI can make mistakes. If a question doesn't fit the skill or source, challenge it. Press continue if you feel you've demonstrated mastery</div>
+    </div>
+
+    <div class="chat-panel">
+        <div id="chat" class="chat-box"></div>
+
+        <div class="input-row">
+            <input id="input" type="text" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+            <button id="next-phase-btn" onclick="advancePhase()">Ready to Begin?</button>
+        </div>
+        <div id="progress" class="progress-indicator"></div>
+    </div>
+
+    <div id="source-panel" class="source-panel">
+        <div id="source-placeholder">
+            <p>You haven't started looking at sources yet.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let sessionId = null;
+    let sources = [];
+    let currentSourceIndex = 0;
+    let currentSkillIndex = 0;
+    let currentPhase = "intro";
+    let totalSkills = 0;
+
+    // Skill definitions - hard-coded to match backend
+    const SKILL_DEFINITIONS = {
+        "Comprehension": "Establish a literal, accurate understanding of what the source explicitly states.",
+        "Contextualization": "Place the source within its historical time, place, and conditions.",
+        "Sourcing": "Analyze the author, date, audience, and perspective.",
+        "Claim/Evidence": "Make a historical claim about the guiding question using the source, providing textual evidence.",
+        "Evaluation": "Assess the usefulness and limitations of the source for answering the guiding question."
+    };
+
+    function addMessage(sender, text) {
+        const chat = document.getElementById('chat');
+        const div = document.createElement('div');
+        div.className = `msg ${sender}`;
+        div.textContent = text;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function addSystemNotice(text) {
+        const chat = document.getElementById('chat');
+        const div = document.createElement('div');
+        div.className = 'msg system';
+        div.textContent = text;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('input');
+        const message = input.value.trim();
+        if (!message || !sessionId) return;
+
+        addMessage('user', message);
+        input.value = '';
+
+        try {
+            const res = await fetch(`student_response/${sessionId}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ message })
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                console.error('student_response failed', res.status, text);
+                addMessage('system', 'Error: Could not send message.');
+                return;
+            }
+
+            const data = await res.json();
+            addMessage('ai', data.response);
+
+        } catch (err) {
+            console.error("Error sending message:", err);
+            addMessage('system', 'Error: Connection failed.');
+        }
+    }
+
+    async function advancePhase() {
+        if (!sessionId) return;
+
+        const btn = document.getElementById('next-phase-btn');
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`advance_phase/${sessionId}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!res.ok) {
+                addMessage('system', 'Error: Could not advance phase.');
+                btn.disabled = false;
+                return;
+            }
+
+            const data = await res.json();
+            console.log('advancePhase response:', data);  // Debug log
+
+            // Handle blocking (not ready to advance)
+            if (data.blocked) {
+                addSystemNotice(`Still working on: ${data.current_skill}`);
+                addMessage('ai', data.ai_message);
+                btn.disabled = false;
+                return;
+            }
+
+            // Add AI message
+            // Add mastery notice ONLY when continuing within source_loop (not intro -> source_loop)
+            if (
+                currentPhase === "source_loop" &&
+                data.next_phase === "source_loop" &&
+                data.previous_skill
+            ) {
+                addSystemNotice(`✓ Mastered: ${data.previous_skill}`);
+            }
+            addMessage('ai', data.ai_message);
+
+            // Update phase tracking
+            currentPhase = data.next_phase;
+
+            if (data.next_phase === "source_loop") {
+                // Update button text
+                btn.textContent = "Continue";
+
+                // Update indices
+                currentSourceIndex = data.source_index || 0;
+                currentSkillIndex = data.skill_index || 0;
+
+                // Show skill box with current skill info - THIS IS KEY
+                console.log('Should show skill box now. Skill:', data.next_skill, 'Desc:', data.current_skill_description);
+                if (data.current_skill) {
+                    showSkillMessage(data.current_skill, data.current_skill_description);
+                } else {
+                    console.error('No current_skill in response!');
+                }
+
+                // Render current source
+                if (sources.length > 0 && currentSourceIndex < sources.length) {
+                    renderSource(sources[currentSourceIndex]);
+                    updateProgress();
+                }
+            } else if (data.complete) {
+                btn.textContent = "Complete!";
+                btn.disabled = true;
+                return;
+            }
+
+            btn.disabled = false;
+
+        } catch (err) {
+            console.error('Error advancing phase:', err);
+            addMessage('system', 'Error: Connection failed.');
+            btn.disabled = false;
+        }
+    }
+
+    function renderSource(source) {
+        const panel = document.getElementById('source-panel');
+        panel.innerHTML = `
+        <h3>${source.title || 'Primary Source'}
+            <span style="font-size:0.7rem; font-weight:400; color:#b8c5c7;">
+                (${currentSourceIndex + 1} of ${sources.length})
+            </span>
+        </h3>
+        <p class="source-meta">${source.author || 'Unknown'}, ${source.year || 'n.d.'}</p>
+        <hr />
+        <p>${source.text || 'No text available.'}</p>
+    `;
+    }
+
+    function updateProgress() {
+        // Progress is now just shown in source panel title
+    }
+
+    function showSkillMessage(skillName, skillDescription) {
+        console.log('Showing skill:', skillName, 'Description:', skillDescription);
+        if (!skillName) {
+            console.warn('No skill name provided');
+            return;
+        }
+
+        // Use provided description, or fall back to hard-coded definition
+        const description = skillDescription || SKILL_DEFINITIONS[skillName] || "Definition not available.";
+
+        const skillBox = document.getElementById("skill-box");
+        const skillLine = document.getElementById("skill-line");
+
+        // Format on one line: "SKILL NAME: Description"
+        skillLine.innerHTML = `<strong>${skillName}</strong>: ${description}`;
+
+        skillBox.classList.add('visible');
+        skillBox.style.display = 'block';
+    }
+
+    window.onload = async () => {
+        try {
+            const res = await fetch('start_session/1/', {
+                method: 'POST',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                console.error('start_session failed', res.status, text);
+                addMessage('system', 'Error: Could not start session.');
+                return;
+            }
+
+            const data = await res.json();
+            console.log('Session data:', data);
+
+            sessionId = data.session_id;
+            sources = data.sources || [];
+            totalSkills = data.total_skills || 5;  // Updated to 5
+
+            // Update header with student/teacher/topic info
+            if (data.student_name && data.teacher_name && data.topic) {
+                document.getElementById('header-info').textContent =
+                    `${data.student_name} | ${data.teacher_name} | ${data.topic}`;
+            }
+
+            if (data.guiding_question) {
+                document.getElementById('guiding-question').textContent =
+                    `${data.guiding_question}`;
+            }
+
+            // Show skill box immediately for first skill (before clicking Ready)
+            if (data.current_skill) {
+                showSkillMessage(data.current_skill, data.current_skill_description);
+            }
+
+            addMessage('ai', data.ai_message);
+        } catch (err) {
+            console.error('Error starting session:', err);
+            addMessage('system', 'Error: Could not connect to server.');
+        }
+    };
+
+    document.getElementById('input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
+</body>
+</html>
